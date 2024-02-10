@@ -16,12 +16,21 @@ const New: React.FC = () => {
   const [description, setDescription] = useState<string>('');
 
   const [marqueListe, setMarqueListe] = useState<any[]>([]);
+  const [modeleListe, setmodeleListe] = useState<any[]>([]);
+  const [transListe, settransListe] = useState<any[]>([]);
+  const [carbListe, setcarbListe] = useState<any[]>([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const marqueListe = await axios.get('https://carsdealerwebservice-production.up.railway.app/listMarque');
+        const marqueListe = await api.get('/listMarque');
         setMarqueListe(marqueListe.data);
+        const modeleListe = await api.get('/listModele');
+        setmodeleListe(modeleListe.data);
+        const transListe = await api.get('/listTransmission');
+        settransListe(transListe.data);
+        const carbListe = await api.get('/listCarburant');
+        setcarbListe(carbListe.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
       }
@@ -59,12 +68,26 @@ const New: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+      
+        <IonItem>
+          <IonLabel>Marque</IonLabel>
+          <IonSelect value={marque} placeholder="Sélectionner" onIonChange={(e) => setMarque(e.detail.value!)}>
+          {marqueListe.map(item => (
+            <IonSelectOption key={item.id} value={item.id}>
+              {item.nom}
+            </IonSelectOption>
+          ))}
+          </IonSelect>
+        </IonItem>
 
         <IonItem>
-          <IonLabel>Modèle</IonLabel>
+        <IonLabel>Modele</IonLabel>
           <IonSelect value={modele} placeholder="Sélectionner" onIonChange={(e) => setModele(e.detail.value!)}>
-            <IonSelectOption value="Civic">Civic</IonSelectOption>
-            <IonSelectOption value="Rav4">Rav4</IonSelectOption>
+          {modeleListe.map(item => (
+            <IonSelectOption key={item.id} value={item.id}>
+              {item.nom}
+            </IonSelectOption>
+          ))}
           </IonSelect>
         </IonItem>
 
@@ -77,18 +100,24 @@ const New: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel>Transmission</IonLabel>
+        <IonLabel>Transmission</IonLabel>
           <IonSelect value={transmission} placeholder="Sélectionner" onIonChange={(e) => setTransmission(e.detail.value!)}>
-            <IonSelectOption value="Automatique">Automatique</IonSelectOption>
-            <IonSelectOption value="Manuelle">Manuelle</IonSelectOption>
+          {transListe.map(item => (
+            <IonSelectOption key={item.id} value={item.id}>
+              {item.nom}
+            </IonSelectOption>
+          ))}
           </IonSelect>
         </IonItem>
 
         <IonItem>
-          <IonLabel>Type de carburant</IonLabel>
+        <IonLabel>Carburant</IonLabel>
           <IonSelect value={carburant} placeholder="Sélectionner" onIonChange={(e) => setCarburant(e.detail.value!)}>
-            <IonSelectOption value="Essence">Essence</IonSelectOption>
-            <IonSelectOption value="Diesel">Diesel</IonSelectOption>
+          {carbListe.map(item => (
+            <IonSelectOption key={item.id} value={item.id}>
+              {item.nom}
+            </IonSelectOption>
+          ))}
           </IonSelect>
         </IonItem>
 
